@@ -69,7 +69,7 @@ export const asyncRoutes = [{
     {
       path: '/role',
       name: 'Role',
-      component: () => import('@/views/acl/role'),
+      component: () => import('@/views/acl/role.vue'),
       meta: { title: '角色管理' }
     },
     {
@@ -80,12 +80,12 @@ export const asyncRoutes = [{
       hidden: true,
       activeMenu: "/role",
     },
-    {
+    /* {
       path: '/permission',
       name: 'Permission',
       component: () => import('@/views/acl/permission'),
       meta: { title: '菜单管理' }
-    },
+    }, */
   ]
 }
 ]
