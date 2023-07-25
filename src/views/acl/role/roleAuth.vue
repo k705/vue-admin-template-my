@@ -10,13 +10,14 @@
       default-expand-all
       :props="defaultProps"
     />
-    <el-button  type="primary" @click="save">保存</el-button>
-    <el-button >取消</el-button>
+    <el-button type="primary" @click="save">保存</el-button>
+    <el-button @click="cancel">取消</el-button>
   </div>
 </template>
 
 <script>
 import { reqGetAssignRole, reqAssignRole } from "@/api/role";
+import { state } from "@/store/modules/user.js";
 
 export default {
   name: "trademark",
@@ -49,12 +50,12 @@ export default {
       this.$refs.treeRef.setCheckedKeys(checkedIds);
     },
 
-    getCheckedIds(auths, initArr) {
+    getCheckedIds(auths, initArr = []) {
       auths.forEach((item) => {
         if (item.select && item.level === 4) {
           initArr.push(item.id);
         } else if (item.children) {
-          getCheckedIds(item.children, initArr);
+          this.getCheckedIds(item.children, initArr);
         }
       });
       return initArr;
@@ -65,33 +66,38 @@ export default {
   */
     async save() {
       // 得到所有全选的id
-      const checkedIds = this.$refs.treeRef?.getCheckedKeys();
+      const checkedIds = this.$refs.treeRef.getCheckedKeys();
       // 得到所有半选的id
-      const halfCheckedIds = this.$refs.treeRef?.getHalfCheckedKeys();
+      const halfCheckedIds = this.$refs.treeRef.getHalfCheckedKeys();
       // 合并全选和半选的id， 并用逗号连接成串
-      var ids = checkedIds?.concat(halfCheckedIds).join(",");
+      var ids = checkedIds.concat(halfCheckedIds).join(",");
 
-     await reqAssignRole(this.$route.query.id, ids)
-        //  this.$router.replace("/acl/role");
+      await reqAssignRole(this.$route.query.id, ids);
+      this.$router.replace("/role");
+      // 跳转完成后, 如果分配的是当前用户角色的权限, 刷新一下浏览器
+     /*  const roleName = this.$route.query.roleName;
+      if (state.roles.includes(roleName)) {
+        console.log(state.roles);
+        window.location.reload();
+      } */
 
-    //  .then(async () => {
-        // 跳转到角色列表页面
-        //  this.$router.replace("/acl/role/list");
-        // 跳转完成后, 如果分配的是当前用户角色的权限, 刷新一下浏览器
-        // const roleName = this.$route.query.roleName;
-        /* if (userInfoStore.userInfo.roles.includes(roleName)) {
+      //  .then(async () => {
+      // 跳转到角色列表页面
+      //  this.$router.replace("/acl/role/list");
+      // 跳转完成后, 如果分配的是当前用户角色的权限, 刷新一下浏览器
+      // const roleName = this.$route.query.roleName;
+      /* if (userInfoStore.userInfo.roles.includes(roleName)) {
           window.location.reload();
         } */
       // });
     },
 
-    /*
-  取消
-  */
-   /*  cancel() {
+    // 取消
+
+    cancel() {
       // 跳转到角色列表
-      this.$router.replace("/acl/role");
-    }, */
+      this.$router.replace("/role");
+    },
   },
   watch: {},
   computed: {

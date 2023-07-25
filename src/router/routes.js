@@ -72,9 +72,8 @@ export const asyncRoutes = [{
       component: () => import('@/views/acl/role'),
       meta: { title: '角色管理' }
     },
-    {
+    { name: 'RoleAuth',
       path: '/role/auth',
-      name: 'Role',
       component: () => import('@/views/acl/role/roleAuth'),
       meta: { title: '角色管理' },
       hidden: true,

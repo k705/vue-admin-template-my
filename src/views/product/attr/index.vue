@@ -61,12 +61,7 @@
       :visible.sync="isShowAddOrEditTrademarkDialog"
       width="40%"
     >
-      <el-form
-        ref="formRef"
-        :model="formData"
-        label-width="90px"
-        :rules="rules"
-      >
+      <el-form ref="formRef" :model="formData" label-width="90px" :rules="rules">
         <el-form-item label="品牌名称" prop="tmName">
           <el-input v-model="formData.tmName" />
         </el-form-item>
@@ -222,9 +217,10 @@ export default {
           logoUrl: "",
         };
       }
-      this.$nextTick(() => {
-        this.$refs.formRef.clearValidate();
-      });
+       this.$nextTick(() => {
+
+    formRef.clearValidate();
+  });
     },
     handleAvatarSuccess(response, uploadFile, uploadFiles) {
       // 把上传成功后的文件地址赋值给 formData.value.logoUrl
@@ -234,7 +230,8 @@ export default {
     },
     async addOrUpdateTrademarkHandler() {
       try {
-        const res = await this.$refs.formRef.validate();
+
+      const res = await formRef.value.validate();
 
         if (this.messageType == "新增") {
           await reqAddTrademarkList(this.formData);
@@ -254,7 +251,14 @@ export default {
   },
   watch: {},
   computed: {
-   
+    /*  //设置三级分类列表区域是否展示
+    categoryIsShow() {
+      //首先判断当前是否在首页,如果在首页则永久展示
+      if (this.$route.name === "Home") return true;
+
+      //判断鼠标在不在三级分类区域,如果在则返回true,否则返回false
+      return this.mouseIsInNav;
+    },*/
   },
 };
 </script>

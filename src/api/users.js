@@ -27,6 +27,9 @@ export function reqAssignRoleByUserId(userId) {
 export function reqDoAssignRoleById(userId, roleId) {
   return request.post(`/admin/acl/user/doAssign?userId=${userId}&roleId=${roleId}`);
 }
+/* export function reqDoAssignRoleById(userId, roleId) {
+  return request.post(`/admin/acl/user/doAssign`,null,{params:{userId,roleId}});
+} */
 
 // DELETE /admin/acl/user/remove/{id}
 export function reqDeleteUserById(id) {
