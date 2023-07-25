@@ -69,13 +69,13 @@ export const asyncRoutes = [{
     {
       path: '/role',
       name: 'Role',
-      component: () => import('@/views/acl/role.vue'),
+      component: () => import('@/views/acl/role'),
       meta: { title: '角色管理' }
     },
     {
       path: '/role/auth',
       name: 'Role',
-      component: () => import('@/views/acl/role/roleAuth.vue'),
+      component: () => import('@/views/acl/role/roleAuth'),
       meta: { title: '角色管理' },
       hidden: true,
       activeMenu: "/role",
