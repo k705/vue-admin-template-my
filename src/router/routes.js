@@ -1,3 +1,5 @@
+/* Layout */
+import Layout from '@/layout'
 
 
 export const staticRoutes = [
@@ -25,41 +27,67 @@ export const staticRoutes = [
     }]
   },
 
-  {
-    path: '/product',
-    component: Layout,
-    redirect: '/product/trademark',
-    name: 'Product',
-    meta: { title: '商品管理', icon: 'el-icon-s-shop' },
-    children: [
-      {
-        path: 'trademark',
-        name: 'Trademark',
-        component: () => import('@/views/product/trademark'),
-        meta: { title: '品牌管理' }
-      },
-
-    ]
-  },
 
 
 
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+
+
+]
+export const asyncRoutes = [{
+  path: '/product',
+  component: Layout,
+  redirect: '/product/trademark',
+  name: 'Product',
+  meta: { title: '商品管理', icon: 'el-icon-s-shop' },
+  children: [
+    {
+      path: 'trademark',
+      name: 'Trademark',
+      component: () => import('@/views/product/trademark'),
+      meta: { title: '品牌管理' }
+    },
+    {
+      path: 'attr',
+      name: 'Attr',
+      component: () => import('@/views/product/attr'),
+      meta: { title: '平台属性管理' }
+    }]
+},
+{
+  path: '/acl',
+  component: Layout,
+  redirect: '/acl/user',
+  name: 'Acl',
+  meta: { title: '权限管理', icon: 'el-icon-s-shop' },
+  children: [
+    {
+      path: '/user',
+      name: 'User',
+      component: () => import('@/views/acl/user'),
+      meta: { title: '用户管理' }
+    },
+    {
+      path: '/role',
+      name: 'Role',
+      component: () => import('@/views/acl/role'),
+      meta: { title: '角色管理' }
+    },
+    {
+      path: '/role/auth',
+      name: 'Role',
+      component: () => import('@/views/acl/role/roleAuth.vue'),
+      meta: { title: '角色管理' },
+      hidden: true,
+      activeMenu: "/role",
+    },
+    {
+      path: '/permission',
+      name: 'Permission',
+      component: () => import('@/views/acl/permission'),
+      meta: { title: '菜单管理' }
+    },
+  ]
+}
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
-
-const router = createRouter()
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
-}
-
-export default router
+export const anyRoutes = [{ path: '*', redirect: '/404', hidden: true }]

@@ -1,68 +1,38 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import { staticRoutes } from './routes'
 Vue.use(Router)
+// 重写push和replace
+const oldPush = Router.prototype.push;
+const oldReplace = Router.prototype.replace;
 
-/* Layout */
-import Layout from '@/layout'
-
-
-export const constantRoutes = [
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
-  },
-
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
-  },
-
-  {
-    path: '/product',
-    component: Layout,
-    redirect: '/product/trademark',
-    name: 'Product',
-    meta: { title: '商品管理', icon: 'el-icon-s-shop' },
-    children: [
-      {
-        path: 'trademark',
-        name: 'Trademark',
-        component: () => import('@/views/product/trademark'),
-        meta: { title: '品牌管理' }
-      },
-
-    ]
-  },
+Router.prototype.push = function (
+  location,
+  onComplete = () => { },
+  onAbort = () => { }
+) {
+  oldPush.call(this, location, onComplete, onAbort);
+};
+Router.prototype.replace = function (
+  location,
+  onComplete = () => { },
+  onAbort = () => { }
+) {
+  oldReplace.call(this, location, onComplete, onAbort);
+};
 
 
 
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
-]
-
+// 注册路由
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: staticRoutes
 })
-
 const router = createRouter()
 
+
+// 退出登录清空路由
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
